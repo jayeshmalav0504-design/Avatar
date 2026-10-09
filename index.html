@@ -1,0 +1,1631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rajasthan Tourism — AI Avatar Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0a0b10;
+      --card-bg: rgba(26, 28, 40, 0.85);
+      --accent-gold: #f5b041;
+      --accent-saffron: #ff6b35;
+      --accent-ruby: #c0392b;
+      --text-main: #f8f9fa;
+      --text-muted: #9aa0a6;
+      --border-glass: rgba(245, 176, 65, 0.2);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: radial-gradient(circle at top center, #1e1215 0%, #0a0b10 80%);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 1100px;
+      width: 100%;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.35rem 1rem;
+      background: linear-gradient(135deg, rgba(255,107,53,0.2), rgba(245,176,65,0.2));
+      border: 1px solid var(--accent-gold);
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 2.6rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #fff2cc 20%, #f5b041 60%, #e67e22 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 2rem;
+    }
+
+    @media (max-width: 860px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-glass);
+      border-radius: 20px;
+      padding: 1.75rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      position: relative;
+    }
+
+    .avatar-preview-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 2px solid rgba(245, 176, 65, 0.3);
+      box-shadow: 0 8px 30px rgba(255, 107, 53, 0.25);
+      margin-bottom: 1.25rem;
+      background: #111;
+    }
+
+    .avatar-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .video-player {
+      display: none;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .credits-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 12px;
+      font-size: 0.9rem;
+    }
+
+    .credits-pill {
+      color: #2ecc71;
+      font-weight: 700;
+    }
+
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      color: var(--accent-gold);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .script-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 0.65rem 0.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #ff6b35, #f5b041);
+      color: #000;
+      border-color: transparent;
+      box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+    }
+
+    textarea {
+      width: 100%;
+      height: 150px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 1rem;
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      resize: vertical;
+      margin-bottom: 0.5rem;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent-gold);
+    }
+
+    .word-count {
+      text-align: right;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+    }
+
+    .control-group {
+      margin-bottom: 1.25rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+    }
+
+    .generate-btn {
+      width: 100%;
+      padding: 1.1rem;
+      background: linear-gradient(135deg, #ff6b35 0%, #f5b041 100%);
+      color: #111;
+      font-family: 'Cinzel', serif;
+      font-weight: 900;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      box-shadow: 0 6px 25px rgba(255, 107, 53, 0.4);
+      transition: all 0.25s ease;
+      letter-spacing: 1px;
+    }
+
+    .generate-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 35px rgba(255, 107, 53, 0.6);
+    }
+
+    .generate-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .status-box {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      font-size: 0.9rem;
+      display: none;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(245, 176, 65, 0.3);
+      border-top-color: var(--accent-gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .download-btn {
+      display: none;
+      margin-top: 1rem;
+      text-align: center;
+      padding: 0.85rem;
+      background: #27ae60;
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .download-btn:hover {
+      background: #2ecc71;
+    }
+
+    /* Mode Navigation Tabs */
+    .mode-nav {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      background: rgba(0,0,0,0.3);
+      padding: 0.35rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .mode-btn {
+      flex: 1;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text-muted);
+      background: transparent;
+      transition: all 0.2s ease;
+    }
+
+    .mode-btn.active {
+      background: linear-gradient(135deg, rgba(245, 176, 65, 0.25), rgba(255, 107, 53, 0.25));
+      color: var(--accent-gold);
+      border: 1px solid var(--accent-gold);
+      box-shadow: 0 4px 15px rgba(245, 176, 65, 0.15);
+    }
+
+    /* Chat Section */
+    .chat-section {
+      display: none;
+      flex-direction: column;
+      height: 480px;
+    }
+
+    .chat-section.active {
+      display: flex;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      margin-bottom: 1rem;
+    }
+
+    .chat-msg {
+      max-width: 85%;
+      padding: 0.85rem 1.1rem;
+      border-radius: 14px;
+      font-size: 0.93rem;
+      line-height: 1.5;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .chat-msg.avatar-msg {
+      align-self: flex-start;
+      background: rgba(245, 176, 65, 0.12);
+      border: 1px solid rgba(245, 176, 65, 0.3);
+      color: #fff;
+      border-bottom-left-radius: 3px;
+    }
+
+    .chat-msg.user-msg {
+      align-self: flex-end;
+      background: linear-gradient(135deg, #ff6b35, #e67e22);
+      color: #fff;
+      border-bottom-right-radius: 3px;
+    }
+
+    .msg-author {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.25rem;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+    }
+
+    .chip-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .quick-chip {
+      padding: 0.35rem 0.75rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 50px;
+      color: #ddd;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .quick-chip:hover {
+      background: rgba(245, 176, 65, 0.2);
+      border-color: var(--accent-gold);
+      color: #fff;
+    }
+
+    .chat-input-bar {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: 0.85rem 1rem;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+    }
+
+    .chat-input:focus {
+      outline: none;
+      border-color: var(--accent-gold);
+    }
+
+    .send-btn {
+      padding: 0.85rem 1.4rem;
+      background: linear-gradient(135deg, #ff6b35, #f5b041);
+      border: none;
+      border-radius: 12px;
+      color: #111;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .send-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .speak-indicator {
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--accent-gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .make-video-action {
+      display: inline-block;
+      margin-top: 0.4rem;
+      font-size: 0.78rem;
+      color: var(--accent-gold);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    /* Enhanced Talking Avatar & Visualizer */
+    .avatar-preview-container {
+      transition: all 0.35s ease;
+      position: relative;
+    }
+
+    .avatar-preview-container.is-speaking {
+      border-color: #f5b041 !important;
+      box-shadow: 0 0 25px rgba(245, 176, 65, 0.75), 0 0 50px rgba(255, 107, 53, 0.45) !important;
+      animation: royalPulse 1.6s infinite alternate ease-in-out;
+    }
+
+    @keyframes royalPulse {
+      0% { transform: scale(1); filter: brightness(1); }
+      100% { transform: scale(1.02); filter: brightness(1.08); }
+    }
+
+    .live-talking-banner {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      right: 10px;
+      background: rgba(10, 11, 16, 0.88);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--accent-gold);
+      border-radius: 10px;
+      padding: 0.45rem 0.75rem;
+      display: none;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.82rem;
+      color: var(--accent-gold);
+      font-weight: 600;
+      z-index: 10;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+
+    .live-talking-banner.active {
+      display: flex;
+    }
+
+    .eq-bar-wrap {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 14px;
+    }
+
+    .eq-bar {
+      width: 3px;
+      background: var(--accent-gold);
+      border-radius: 2px;
+      animation: eqDance 0.7s infinite ease-in-out alternate;
+    }
+    .eq-bar:nth-child(1) { height: 35%; animation-delay: 0.1s; }
+    .eq-bar:nth-child(2) { height: 85%; animation-delay: 0.3s; }
+    .eq-bar:nth-child(3) { height: 55%; animation-delay: 0.2s; }
+    .eq-bar:nth-child(4) { height: 95%; animation-delay: 0.4s; }
+    .eq-bar:nth-child(5) { height: 45%; animation-delay: 0.15s; }
+
+    @keyframes eqDance {
+      0% { height: 20%; }
+      100% { height: 100%; }
+    }
+
+    .avatar-action-bar {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .avatar-action-btn {
+      flex: 1;
+      padding: 0.55rem 0.4rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(245, 176, 65, 0.25);
+      border-radius: 10px;
+      color: #ddd;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      font-family: inherit;
+    }
+
+    .avatar-action-btn:hover {
+      background: rgba(245, 176, 65, 0.2);
+      border-color: var(--accent-gold);
+      color: #fff;
+    }
+
+    .avatar-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      color: #2ecc71;
+      font-weight: 600;
+      background: rgba(46, 204, 113, 0.1);
+      padding: 0.25rem 0.6rem;
+      border-radius: 50px;
+      border: 1px solid rgba(46, 204, 113, 0.25);
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      background: #2ecc71;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #2ecc71;
+      animation: pulseDot 2s infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    .chat-msg-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 0.55rem;
+      padding-top: 0.45rem;
+      border-top: 1px solid rgba(245, 176, 65, 0.15);
+      font-size: 0.78rem;
+    }
+
+    .msg-action-btn {
+      background: none;
+      border: none;
+      color: var(--accent-gold);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.78rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0;
+      transition: opacity 0.2s;
+    }
+
+    .msg-action-btn:hover {
+      opacity: 0.8;
+      text-decoration: underline;
+    }
+
+    .mic-btn {
+      padding: 0.85rem 1rem;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(245, 176, 65, 0.3);
+      border-radius: 12px;
+      color: var(--accent-gold);
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mic-btn:hover {
+      background: rgba(245, 176, 65, 0.25);
+    }
+
+    .mic-btn.listening {
+      background: #c0392b;
+      color: #fff;
+      border-color: #e74c3c;
+      animation: micPulse 1s infinite;
+    }
+
+    @keyframes micPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .mic-recording-banner {
+      display: none;
+      align-items: center;
+      gap: 0.75rem;
+      background: rgba(192, 57, 43, 0.25);
+      border: 1px solid rgba(231, 76, 60, 0.6);
+      border-radius: 12px;
+      padding: 0.65rem 0.95rem;
+      margin-bottom: 0.65rem;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .mic-pulse-ring {
+      width: 14px;
+      height: 14px;
+      background: #e74c3c;
+      border-radius: 50%;
+      box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7);
+      animation: micPulseWave 1.4s infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes micPulseWave {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); }
+      70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+    }
+
+    .mic-error-banner {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(243, 156, 18, 0.15);
+      border: 1px solid rgba(243, 156, 18, 0.4);
+      color: #f5b041;
+      border-radius: 10px;
+      padding: 0.55rem 0.85rem;
+      margin-bottom: 0.65rem;
+      font-size: 0.82rem;
+      line-height: 1.4;
+      animation: fadeIn 0.25s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="badge">Incredible India • Rajasthan Tourism</div>
+      <h1>Padharo Mhare Des Studio</h1>
+      <p class="subtitle">Interactive AI Cultural Ambassador & D-ID Royal Presenter Studio</p>
+    </header>
+
+    <div class="grid">
+      <!-- Left Column: Avatar & Video Preview -->
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.75rem;">
+          <h2 class="section-title" style="margin-bottom:0;">👑 Maharani Royal Avatar</h2>
+          <div class="avatar-status-pill">
+            <span class="status-dot"></span>
+            <span>Online & Ready</span>
+          </div>
+        </div>
+
+        <div class="avatar-preview-container" id="avatarBox">
+          <img id="avatarImage" src="avatar.jpg" alt="Maharani Gayatri Devi - Rajasthani Royal Ambassador" class="avatar-img" style="display:none;">
+          <video id="videoPlayer" class="video-player" src="rajasthan_tourism_maharani.mp4?v=20261010" playsinline style="display:block;"></video>
+          
+          <div class="live-talking-banner" id="liveTalkingBanner">
+            <div class="eq-bar-wrap">
+              <div class="eq-bar"></div>
+              <div class="eq-bar"></div>
+              <div class="eq-bar"></div>
+              <div class="eq-bar"></div>
+              <div class="eq-bar"></div>
+            </div>
+            <span>👑 Maharani Sa is speaking...</span>
+          </div>
+        </div>
+
+        <!-- Interactive avatar control bar -->
+        <div class="avatar-action-bar">
+          <button class="avatar-action-btn" id="playIntroBtn" onclick="playOriginalIntroVideo()" title="Hear Maharani Gayatri Devi's royal introduction">
+            ▶️ Hear Royal Intro
+          </button>
+          <button class="avatar-action-btn" id="voiceToggleBtn" onclick="toggleVoiceAudio()" title="Toggle voice narration">
+            🔊 Voice: ON
+          </button>
+          <button class="avatar-action-btn" id="togglePhotoBtn" onclick="toggleMediaMode()" title="Switch between video and photo">
+            🖼️ Photo Mode
+          </button>
+        </div>
+
+        <!-- Voice Persona Setting (Exact Intro Video Voice) -->
+        <div style="margin-top: 0.85rem; margin-bottom: 0.85rem; padding: 0.75rem 0.85rem; background: rgba(0,0,0,0.35); border: 1px solid rgba(245, 176, 65, 0.25); border-radius: 12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.4rem;">
+            <label style="font-size: 0.78rem; color: var(--accent-gold); font-weight: 700; margin:0; letter-spacing: 0.5px;">🎙️ Maharani Voice Persona</label>
+            <button onclick="testMaharaniVoice()" style="background:rgba(245,176,65,0.15); border:1px solid rgba(245,176,65,0.3); color:var(--accent-gold); font-size:0.75rem; font-weight:600; padding:0.2rem 0.5rem; border-radius:6px; cursor:pointer;">Test Voice 🔊</button>
+          </div>
+          <div style="font-size: 0.82rem; color: #2ecc71; display:flex; align-items:center; gap:0.4rem; font-weight:600;">
+            <span>●</span>
+            <span>Neerja Neural (Exact Intro Video Voice)</span>
+          </div>
+        </div>
+
+        <div class="credits-info">
+          <span>D-ID Account Status:</span>
+          <span class="credits-pill" id="creditsText">● Active (6 Credits Remaining)</span>
+        </div>
+
+        <a id="downloadBtn" class="download-btn" href="rajasthan_tourism_maharani.mp4" target="_blank" download="rajasthan_tourism_maharani.mp4" style="display:block; background: linear-gradient(135deg, #e67e22, #f39c12);">
+          🔥 Download Maharani Royal Video (MP4)
+        </a>
+      </div>
+
+      <!-- Right Column: Dual Mode Studio & Interactive Chat -->
+      <div class="card">
+        <div class="mode-nav">
+          <button class="mode-btn active" id="btnChatMode" onclick="switchAppMode('chat')">💬 Live Chat & Avatar Replies</button>
+          <button class="mode-btn" id="btnStudioMode" onclick="switchAppMode('studio')">🎬 D-ID Video Production</button>
+        </div>
+
+        <!-- 1. Interactive Chat Section -->
+        <div class="chat-section active" id="chatSection">
+          <div class="speak-indicator" id="speakIndicator">
+            <div class="spinner" style="width:14px; height:14px; border-width:2px;"></div>
+            <span>🔊 Maharani Gayatri Devi is answering your royal inquiry...</span>
+          </div>
+
+          <div class="chat-messages" id="chatMessages">
+            <div class="chat-msg avatar-msg" id="initialWelcomeMsg">
+              <div class="msg-author">👑 Maharani Gayatri Devi</div>
+              <div>Arey Khamma Ghani Sa, my dear guest! Come on in, let me share a royal secret with you. When you visit Rajasthan, you do not just see history — you live it! Have you ever climbed the winding ramparts of Mehrangarh as the desert wind sings ancient warrior songs? Or tasted piping hot Dal Baati Churma with sweet ghevar in a buzzing night bazaar? From regal courtyards to starlit sand dunes, every moment is pure magic. Tell me, when are you visiting? Padharo Mhare Des!</div>
+              <div class="chat-msg-actions">
+                <button class="msg-action-btn" onclick="playOriginalIntroVideo()">▶️ Watch Royal Video Greeting</button>
+                <button class="msg-action-btn" onclick="speakText('Arey Khamma Ghani Sa, my dear guest! Come on in, let me share a royal secret with you. When you visit Rajasthan, you do not just see history - you live it! Have you ever climbed the winding ramparts of Mehrangarh as the desert wind sings ancient warrior songs? Or tasted piping hot Dal Baati Churma with sweet ghevar in a buzzing night bazaar? From regal courtyards to starlit sand dunes, every moment is pure magic. Tell me, when are you visiting? Padharo Mhare Des!')">🔊 Listen in Maharani Sa's Voice</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="chip-container">
+            <button class="quick-chip" onclick="sendQuickPrompt('Who are you, Maharani Sa?')">👑 Who Are You?</button>
+            <button class="quick-chip" onclick="sendQuickPrompt('What are the most famous royal dishes I must try?')">🍲 Royal Food</button>
+            <button class="quick-chip" onclick="sendQuickPrompt('Which majestic fort should I visit first?')">🏰 Best Forts</button>
+            <button class="quick-chip" onclick="sendQuickPrompt('Tell me about the desert safari in Jaisalmer')">🐪 Desert Safari</button>
+            <button class="quick-chip" onclick="sendQuickPrompt('What should I see in Jaipur Pink City?')">🌸 Jaipur Guide</button>
+            <button class="quick-chip" onclick="sendQuickPrompt('Tell me about Udaipur and its romantic lakes')">🌊 Udaipur Lakes</button>
+            <button class="quick-chip" onclick="sendQuickPrompt('Can I see tigers in Ranthambore?')">🐅 Tiger Safari</button>
+            <button class="quick-chip" onclick="sendQuickPrompt('When is the best time to visit Rajasthan?')">🗓️ Best Time</button>
+            <button class="quick-chip" onclick="sendQuickPrompt('Suggest a 7-day royal itinerary')">🗺️ 7-Day Plan</button>
+            <button class="quick-chip" onclick="sendQuickPrompt('Khamma Ghani! Rajasthan mein ghumne ki best jagah batao')">🇮🇳 हिन्दी / Hindi</button>
+          </div>
+
+          <!-- Voice Recording Active Banner -->
+          <div class="mic-recording-banner" id="micRecordingBanner">
+            <div class="mic-pulse-ring"></div>
+            <div style="flex:1;">
+              <div style="font-weight:700; color:#ff6b35; font-size:0.85rem;" id="micStatusTitle">🔴 Listening to your voice...</div>
+              <div style="font-size:0.75rem; color:#bbb;" id="micStatusSub">Speak your question clearly (e.g. "Tell me about Jaipur")</div>
+            </div>
+            <button onclick="cancelSpeechRecognition()" style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.25); color:#fff; border-radius:6px; padding:0.25rem 0.6rem; font-size:0.75rem; cursor:pointer;">Cancel ✖</button>
+          </div>
+
+          <!-- Mic Permission / Notice Banner -->
+          <div class="mic-error-banner" id="micErrorBanner">
+            <span id="micErrorText">⚠️ Microphone notice.</span>
+            <button onclick="dismissMicError()" style="background:none; border:none; color:#f5b041; cursor:pointer; margin-left:0.5rem; text-decoration:underline; font-size:0.75rem;">Dismiss</button>
+          </div>
+
+          <div class="chat-input-bar">
+            <input type="text" class="chat-input" id="chatInput" placeholder="Ask your royal guide anything about Rajasthan..." onkeydown="if(event.key==='Enter') sendChatMessage()">
+            <button class="mic-btn" id="micBtn" title="Speak to Maharani Sa with microphone" onclick="toggleSpeechRecognition()">🎤</button>
+            <button class="send-btn" id="chatSendBtn" onclick="sendChatMessage()">Send 💬</button>
+          </div>
+        </div>
+
+        <!-- 2. D-ID Video Production Section -->
+        <div id="studioSection" style="display: none;">
+          <h2 class="section-title">📜 Narration Script</h2>
+          
+          <div class="script-tabs">
+            <button class="tab-btn active" id="tabTalkative" onclick="setScript('TALKATIVE')">🔥 Talkative & Chatty</button>
+            <button class="tab-btn" id="tabKG" onclick="setScript('KG')">👑 Khamma Ghani Intro</button>
+            <button class="tab-btn" id="tabA" onclick="setScript('A')">Option A: Cultural</button>
+            <button class="tab-btn" id="tabB" onclick="setScript('B')">Option B: Forts</button>
+          </div>
+
+          <textarea id="scriptInput" oninput="updateWordCount()"></textarea>
+          <div class="word-count" id="wordCountText">0 words</div>
+
+          <div class="control-group">
+            <label for="styleSelect">Animation Expressiveness</label>
+            <select id="styleSelect">
+              <option value="true" selected>🔥 Lively & Expressive (Head tilts, nods, animated smiling)</option>
+              <option value="false">👑 Calm & Formal (Minimal subtle movement)</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="voiceSelect">Voice Persona (Royal Maharani)</label>
+            <select id="voiceSelect">
+              <option value="en-IN-NeerjaNeural" selected>Neerja (Indian English Female — Regal, Melodic & Warm)</option>
+              <option value="hi-IN-SwaraNeural">Swara (Hindi Female — Authentic Royal Diction)</option>
+              <option value="en-IN-AnanyaNeural">Ananya (Indian English Female — Expressive & Welcoming)</option>
+            </select>
+          </div>
+
+          <button class="generate-btn" id="generateBtn" onclick="generateVideo()">
+            ✨ Generate Royal Video Avatar
+          </button>
+
+          <div class="status-box" id="statusBox">
+            <div class="spinner" id="spinner"></div>
+            <span id="statusText">Starting generation...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SCRIPT_TALKATIVE = "Arey Khamma Ghani Sa, my dear guest! Come on in, let me share a royal secret with you. When you visit Rajasthan, you do not just see history — you live it! Have you ever climbed the winding ramparts of Mehrangarh as the desert wind sings ancient warrior songs? Or tasted piping hot Dal Baati Churma with sweet ghevar in a buzzing night bazaar? From regal courtyards to starlit sand dunes, every moment is pure magic. Tell me, when are you visiting? Padharo Mhare Des!";
+    const SCRIPT_KHAMA = "Khamma Ghani! Welcome to Rajasthan, the land of timeless royalty and valor. From the golden sands of the Thar Desert to the majestic forts of Jaipur, Jodhpur, and Udaipur, our history resonates with tales of bravery, chivalry, and devotion. Experience vibrant folk traditions, soulful music, and warm hospitality that truly define 'Padharo Mhare Des'. Come, explore the royal heritage and vibrant colors of Rajasthan!";
+    const SCRIPT_A = "Padharo Mhare Des! Welcome to Rajasthan, where vibrant traditions breathe life into golden sands. Listen to the soulful resonance of the sarangi, marvel at swirling Kalbelia dancers, and lose yourself in lively desert fairs. Indulge in authentic royal flavours, from rich Dal Baati Churma to fragrant ghevar. Here, every smile is an invitation and every sunset a festival of warmth. Come, experience royal hospitality and let the timeless heart of India welcome you home.";
+    const SCRIPT_B = "Step into an era of valour, romance, and enduring royal grandeur. Welcome to Rajasthan, a living canvas of human ambition. From the impregnable amber ramparts of Mehrangarh to the floating marble wonders of Udaipur's Lake Palace, every stone whispers legends of kings and warriors. Wander through ornate jharokhas, mirrored royal courtyards, and grand desert fortresses carved from living rock. Witness a majestic heritage that has stood the test of centuries. Unveil the royal legacy of Rajasthan.";
+
+    const scriptInput = document.getElementById('scriptInput');
+    const wordCountText = document.getElementById('wordCountText');
+    const generateBtn = document.getElementById('generateBtn');
+    const statusBox = document.getElementById('statusBox');
+    const statusText = document.getElementById('statusText');
+    const avatarImage = document.getElementById('avatarImage');
+    const videoPlayer = document.getElementById('videoPlayer');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    let isVoiceEnabled = true;
+    let speechVoices = [];
+    let isRecognizing = false;
+    let recognition = null;
+    function isFemaleVoice(name) {
+      const n = (name || '').toLowerCase();
+      return /female|woman|girl|heera|neerja|zira|hazel|kalpana|swara|aditi|susan|catherine|linda|jenny|eva|stephanie|aria|victoria|karen|samantha|fiona|moira|veena|helena/i.test(n);
+    }
+
+    function isExplicitMaleVoice(name) {
+      const n = (name || '').toLowerCase();
+      return /male|man|ravi|prabhat|madhur|david|george|mark|guy|james|richard|brian|ryan|eric|oliver|alok|ajay|tarun|rishi|aditya|arjun/i.test(n);
+    }
+
+    function getBestMaharaniVoice() {
+      if (!('speechSynthesis' in window)) return null;
+      if (speechVoices.length === 0) {
+        speechVoices = window.speechSynthesis.getVoices();
+      }
+      if (!speechVoices || speechVoices.length === 0) return null;
+
+      // Priority 1: Indian English or Hindi Female (e.g. Microsoft Heera, Neerja, Swara, Kalpana)
+      const indianFemale = speechVoices.find(v => 
+        (v.lang.includes('en-IN') || v.lang.includes('hi-IN') || v.name.toLowerCase().includes('india')) &&
+        isFemaleVoice(v.name)
+      );
+      if (indianFemale) return indianFemale;
+
+      // Priority 2: Any Indian voice
+      const anyIndian = speechVoices.find(v => 
+        (v.lang.includes('en-IN') || v.lang.includes('hi-IN') || v.name.toLowerCase().includes('india'))
+      );
+      if (anyIndian) return anyIndian;
+
+      return null; // Return null so we never fall back to an American robotic voice!
+    }
+
+    function testMaharaniVoice() {
+      speakText("Arey Khamma Ghani, my friend! I am Maharani Gayatri Devi, speaking in my authentic royal voice, exactly the same as my introduction video! Padharo Mhare Des!");
+    }
+
+    // Unlocks browser audio policy on first user interaction so future plays never get blocked
+    let isBrowserAudioUnlocked = false;
+    function unlockAudioOnUserAction() {
+      if (isBrowserAudioUnlocked) return;
+      isBrowserAudioUnlocked = true;
+      try {
+        const silent = new Audio("data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA");
+        silent.play().catch(() => {});
+      } catch(e) {}
+    }
+    window.addEventListener('click', unlockAudioOnUserAction, { capture: true, passive: true });
+    window.addEventListener('keydown', unlockAudioOnUserAction, { capture: true, passive: true });
+    window.addEventListener('touchstart', unlockAudioOnUserAction, { capture: true, passive: true });
+
+    function initVoices() {
+      if ('speechSynthesis' in window) {
+        speechVoices = window.speechSynthesis.getVoices();
+        window.speechSynthesis.onvoiceschanged = () => {
+          speechVoices = window.speechSynthesis.getVoices();
+        };
+      }
+    }
+    initVoices();
+
+    function setScript(type) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      if (type === 'TALKATIVE') {
+        scriptInput.value = SCRIPT_TALKATIVE;
+        document.getElementById('tabTalkative').classList.add('active');
+      } else if (type === 'KG') {
+        scriptInput.value = SCRIPT_KHAMA;
+        document.getElementById('tabKG').classList.add('active');
+      } else if (type === 'A') {
+        scriptInput.value = SCRIPT_A;
+        document.getElementById('tabA').classList.add('active');
+      } else {
+        scriptInput.value = SCRIPT_B;
+        document.getElementById('tabB').classList.add('active');
+      }
+      updateWordCount();
+    }
+
+    function updateWordCount() {
+      const words = scriptInput.value.trim().split(/\s+/).filter(Boolean);
+      wordCountText.textContent = `${words.length} words (~${Math.round(words.length * 0.38)} sec audio)`;
+    }
+
+    // Initialize with Talkative intro
+    setScript('TALKATIVE');
+
+    async function generateVideo() {
+      const text = scriptInput.value.trim();
+      if (!text) {
+        alert("Please enter a script first.");
+        return;
+      }
+
+      const voiceId = document.getElementById('voiceSelect').value;
+      const isLively = document.getElementById('styleSelect').value === 'true';
+
+      generateBtn.disabled = true;
+      statusBox.style.display = 'flex';
+      statusText.textContent = 'Uploading avatar image to D-ID...';
+
+      try {
+        const resp = await fetch('/api/create-video', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ script: text, voice_id: voiceId, is_lively: isLively })
+        });
+
+        const data = await resp.json();
+        if (data.error) {
+          throw new Error(data.error);
+        }
+
+        const talkId = data.id;
+        statusText.textContent = 'Video job submitted! Rendering on D-ID servers (~20s)...';
+
+        // Poll for result
+        let attempts = 0;
+        const interval = setInterval(async () => {
+          attempts++;
+          try {
+            const checkResp = await fetch(`/api/check-status?id=${talkId}`);
+            const checkData = await checkResp.json();
+            
+            if (checkData.status === 'done') {
+              clearInterval(interval);
+              statusText.textContent = 'Video rendering completed successfully!';
+              document.getElementById('spinner').style.display = 'none';
+
+              // Show video player
+              avatarImage.style.display = 'none';
+              videoPlayer.style.display = 'block';
+              videoPlayer.src = checkData.result_url;
+              videoPlayer.muted = false;
+              videoPlayer.play();
+
+              downloadBtn.href = checkData.result_url;
+              downloadBtn.style.display = 'block';
+              generateBtn.disabled = false;
+            } else if (checkData.status === 'error') {
+              clearInterval(interval);
+              throw new Error('D-ID failed to render the video.');
+            } else {
+              statusText.textContent = `Rendering video... (${checkData.status || 'in-progress'}, ${attempts * 3}s elapsed)`;
+            }
+          } catch (err) {
+            clearInterval(interval);
+            statusText.textContent = 'Error: ' + err.message;
+            generateBtn.disabled = false;
+          }
+        }, 3000);
+
+      } catch (err) {
+        statusText.textContent = 'Error: ' + err.message;
+        generateBtn.disabled = false;
+      }
+    }
+
+    // --- Autonomous Client-Side Royal Ambassador AI Brain ---
+    function generateRoyalReplyLocal(q) {
+      if (!q || !q.trim()) {
+        return "Arey Khamma Ghani Sa, my dear guest! Come on in, let me share a royal secret with you. When you visit Rajasthan, you do not just see history - you live it! Have you ever climbed the winding ramparts of Mehrangarh as the desert wind sings ancient warrior songs? Or tasted piping hot Dal Baati Churma with sweet ghevar in a buzzing night bazaar? From regal courtyards to starlit sand dunes, every moment is pure magic. Tell me, when are you visiting? Padharo Mhare Des!";
+      }
+
+      const q_lower = q.toLowerCase();
+
+      if (/(hello|hi|hey|khamma|namaste|ghani|greetings|ram ram|pranam|adaab|padharo)/i.test(q_lower)) {
+        return "Arey Khamma Ghani Sa, my dear friend! A royal, heartfelt welcome to the land of kings and queens, eternal romance, and supreme grace. I am Maharani Gayatri Devi, and in our Rajasthan we hold sacred the timeless creed of 'Atithi Devo Bhava' - the guest is God. Tell me, what stirs your curiosity today, Hukum? Majestic hill forts, starlit sand dunes, royal feasts, or colorful bazaars?";
+      }
+
+      if (/(who are you|what is your name|tell me about yourself|who r u|kaun ho|aap kaun|introduce|maharani)/i.test(q_lower)) {
+        return "Arey Khamma Ghani! I am Maharani Gayatri Devi, your royal cultural ambassador! It is my deepest honor to welcome travelers from across the world into our palace courtyards and share the living soul of Rajasthan - our royal heritage, shimmering lake palaces, desert ballads, and heartfelt hospitality. Consider me your royal guide and sister, Hukum!";
+      }
+
+      if (/(jaipur|pink city|amer|amber fort|hawa mahal|jal mahal|nahargarh|jaigarh|bapu bazaar|chokhi dhani)/i.test(q_lower)) {
+        return "Arey Jaipur, our beloved Pink City! Founded in 1727 by Maharaja Sawai Jai Singh II, its rose-colored gates open with immense warmth. Imagine gazing up at the 953 honeycombed breeze windows of Hawa Mahal, walking through the mirrored celestial halls of Amber Fort's Sheesh Mahal, and watching the pink skyline blush with gold at sunset from Nahargarh! And by night, feast on a royal thali while folk dancers swirl to the beats of the dhol. Pure magic, my dear friend!";
+      }
+
+      if (/(udaipur|lake pichola|city palace|jag mandir|fateh sagar|monsoon palace|sajjangarh|lake palace|venice of the east)/i.test(q_lower)) {
+        return "Ah, Udaipur, the Venice of the East and pride of Mewar! Cradled by the ancient Aravalli mountains, it is pure romance. Picture the majestic white marble City Palace reflecting in the calm waters of Lake Pichola, and the ethereal Lake Palace floating like a royal swan. Take a gentle sunset boat ride as the evening breeze ripples across the water and palace lamps flicker like stars. You will fall in love with Udaipur, Hukum!";
+      }
+
+      if (/(jodhpur|blue city|mehrangarh|jaswant thada|umaid bhawan|clock tower|ghanta ghar|suncity)/i.test(q_lower)) {
+        return "Arey Jodhpur, the glorious Sun City under the protective gaze of Mehrangarh Fort! Towering 400 feet above a sea of indigo-blue houses, Mehrangarh is one of the grandest fortresses on Earth. As you climb its winding ramparts, the desert wind whispers ancient ballads of Rajput courage and valor. And right below, the white marble cenotaph of Jaswant Thada gleams like a desert jewel. Truly magnificent, my friend!";
+      }
+
+      if (/(jaisalmer|desert|safari|camel|thar|sand|dunes|sam dunes|sonar qila|golden fort|khuri|dune bashing)/i.test(q_lower)) {
+        return "Arey, the golden sands of Jaisalmer will enchant your very soul! Here stands Sonar Qila, our living Golden Fort sculpted from yellow sandstone. Ride into the rolling Sam sand dunes on a decorated camel as the sun sets in blazing crimson. At night, sit beside a crackling campfire under an infinite canopy of stars, listening to the soulful Sarangi singing 'Kesariya Balam'. Tell me, are you ready for the desert magic? Padharo Mhare Des!";
+      }
+
+      if (/(food|eat|dish|cuisine|taste|dal baati|kachori|sweet|ghevar|laal maas|ker sangri|gatte|churma|hungry)/i.test(q_lower)) {
+        return "Arey, feasting in Rajasthan is an art made for emperors and queens! You must taste our piping hot Dal Baati Churma, drenched in fragrant golden desi ghee. Savor spicy Ker Sangri, crisp Pyaaz Kachoris fresh from morning bazaar karahis, and fiery royal Laal Maas simmered with Mathania red chilies. And never leave without golden honeycomb Ghevar soaked in saffron syrup! One bite and your soul will sing with joy, Hukum!";
+      }
+
+      if (/(fort|palace|kumbhalgarh|chittorgarh|chittor|padmini|vijay stambh|wall|castle)/i.test(q_lower)) {
+        return "Our forts are not made of silent stone, Hukum - every rampart breathes with stories of supreme honor! Chittorgarh Fort stands as the eternal altar of Rajput courage and Rani Padmini's immortal grace. In Kumbhalgarh, walk along the world's second-longest continuous wall - 36 kilometers winding across the mountains! Stand upon these battlements, close your eyes, and you will hear the galloping hooves of warrior kings.";
+      }
+
+      if (/(culture|dance|music|festival|kalbelia|ghoomar|song|folk|sarangi|tradition|turban|pagri|poshak)/i.test(q_lower)) {
+        return "Our culture is a vibrant, joyous celebration of life! Watch royal women dance the graceful Ghoomar with swirling, mirror-embroidered ghagras, and marvel at the fiery, hypnotic twirls of the Kalbelia desert dancers. When the Khartal clicks and the soulful Sarangi plays, the entire desert comes alive. If you can, visit during our Desert Festival or Pushkar Mela - it is an unforgettable spectacle of color, my friend!";
+      }
+
+      if (/(pushkar|ajmer|brahma|dargah|holy lake|ghat|camel fair)/i.test(q_lower)) {
+        return "Pushkar is a divine, peaceful oasis, blessed with the sacred Lord Brahma Temple and 52 holy bathing ghats encircling its serene lake. During Kartik Purnima, it erupts with joy during the world-famous Pushkar Camel Fair! And just across the mountain lies Ajmer Sharif, where pilgrims of all faiths seek peace, hope, and blessings at the revered shrine of Sufi Saint Khwaja Moinuddin Chishti.";
+      }
+
+      if (/(ranthambore|tiger|wildlife|national park|sariska|bharatpur|bird)/i.test(q_lower)) {
+        return "Rajasthan's wild spirit reigns at Ranthambore National Park! Here, the Royal Bengal Tiger roams like an emperor among tenth-century fort ruins and ancient banyan trees. Imagine an early morning jungle safari through the misty ravines when suddenly a magnificent striped tiger steps out before you - it is a thrill that will make your heart race with wonder, Hukum!";
+      }
+
+      if (/(shopping|shop|buy|textile|jewelry|pottery|souvenir|market|bazaar|mojri|bandhani)/i.test(q_lower)) {
+        return "Rajasthan's bazaars are an artisan's wonderland! In Jaipur, discover authentic cobalt Blue Pottery, dazzling Kundan and Meenakari jewelry, and swirling Leheriya tie-dye fabrics. In Jodhpur, slip into handcrafted camel-leather mojris and take home fragrant Mathania spices. Every craft has been passed down from master artisans across royal generations!";
+      }
+
+      if (/(when|weather|time to visit|month|season|october|winter|summer|monsoon|temperature)/i.test(q_lower)) {
+        return "The golden season to visit our land is between October and March! The desert winter brings pleasant, warm sunshine by day and cool, refreshing starlit nights. It is the peak season of vibrant folk festivals, camel safaris, and rooftop palace dining. Even our monsoon from July to September turns Udaipur and Mount Abu into emerald green wonderlands, my friend!";
+      }
+
+      if (/(itinerary|plan|trip|tour|how many days|days|route|places to visit|visit)/i.test(q_lower)) {
+        return "For an unforgettable royal journey, I suggest seven to ten days: Spend two days exploring Jaipur's Amber Fort and bazaars, two days discovering Jodhpur's blue alleys and Mehrangarh, two days riding camels across Jaisalmer's golden sand dunes, and two days resting beside Udaipur's romantic lakes. A royal circuit that will fill your heart with memories for a lifetime, Hukum!";
+      }
+
+      if (/(hotel|stay|resort|haveli|heritage|luxury|budget|room|accommodation)/i.test(q_lower)) {
+        return "In Rajasthan, every traveler is treated like royal royalty! For supreme grandeur, stay in living palaces like Taj Lake Palace in Udaipur or Rambagh Palace in Jaipur. For authentic charm on any budget, stay in family-run heritage havelis with carved jharokhas, courtyards, and warm home-cooked delicacies. You will not feel like a tourist - you will feel like family!";
+      }
+
+      if (/(safe|safety|solo|tip|dress|water|transport|cab|train|flight)/i.test(q_lower)) {
+        return "Travel with an easy mind, my friend! Rajasthan is globally celebrated for its warmth, kindness, and deep respect for guests under 'Atithi Devo Bhava'. Keep water handy in the sunny desert, dress respectfully when visiting sacred temples, take certified government guides at monuments, and always bring a friendly smile. We will take care of you like our own! Padharo Mhare Des!";
+      }
+
+      if (/(kaisa|kahan|kya|batao|kaise|dhanyawad|shukriya|acha|shubh)/i.test(q_lower)) {
+        return "Arey Khamma Ghani Sa! Rajasthan ki paawan veer-bhoomi par aapka hardik swagat hai! Hamare yahan Amer Qila, Hawa Mahal, Mehrangarh ki shaan, Thar Desert ke sunhare dhoron par camel safari, aur desi ghee se bhare Dal Baati Churma aapka intezaar kar rahe hain. Hukum, aap kis sheher ya vishay ke baare mein jaanna chahte hain? Main Maharani Gayatri Devi aapki poori madad karoongi!";
+      }
+
+      return "Arey Hukum, you speak of an intriguing question! In Rajasthan, every palace wall whispers history and every desert wind sings a ballad of valor. Whether you wish to explore our grand hill forts, taste royal delicacies, ride camels across starlit dunes, or witness colorful folk dances, I am right here by your side. Tell me, which wonder shall we unveil first, my friend?";
+    }
+
+    // --- Interactive Chat & Voice Logic ---
+
+    function switchAppMode(mode) {
+      if (mode === 'chat') {
+        document.getElementById('chatSection').classList.add('active');
+        document.getElementById('studioSection').style.display = 'none';
+        document.getElementById('btnChatMode').classList.add('active');
+        document.getElementById('btnStudioMode').classList.remove('active');
+      } else {
+        document.getElementById('chatSection').classList.remove('active');
+        document.getElementById('studioSection').style.display = 'block';
+        document.getElementById('btnStudioMode').classList.add('active');
+        document.getElementById('btnChatMode').classList.remove('active');
+      }
+    }
+
+    function sendQuickPrompt(promptText) {
+      document.getElementById('chatInput').value = promptText;
+      sendChatMessage();
+    }
+
+    async function sendChatMessage() {
+      const inputEl = document.getElementById('chatInput');
+      const msg = inputEl.value.trim();
+      if (!msg) return;
+
+      const chatMessages = document.getElementById('chatMessages');
+
+      // 1. Add User Message
+      const userDiv = document.createElement('div');
+      userDiv.className = 'chat-msg user-msg';
+      userDiv.textContent = msg;
+      chatMessages.appendChild(userDiv);
+      inputEl.value = '';
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      // 2. Add Loading Indicator
+      const loadingDiv = document.createElement('div');
+      loadingDiv.className = 'chat-msg avatar-msg';
+      loadingDiv.id = 'tempLoadingMsg';
+      loadingDiv.innerHTML = '<div class="msg-author">👑 Maharani Gayatri Devi</div>Thinking with royal wisdom...';
+      chatMessages.appendChild(loadingDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      let reply = "";
+      let audioUrl = "";
+      try {
+        const resp = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: msg })
+        });
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data && data.reply) {
+            reply = data.reply;
+            audioUrl = data.audio || "";
+          }
+        }
+      } catch (err) {
+        console.log("Local backend not available, generating royal response instantly via client-side intelligence engine:", err);
+      }
+
+      // Autonomous fallback ensures the avatar NEVER fails to answer
+      if (!reply) {
+        reply = generateRoyalReplyLocal(msg);
+      }
+
+      loadingDiv.remove();
+
+      // 3. Add Avatar Reply Message with Action Buttons
+      const avatarDiv = document.createElement('div');
+      avatarDiv.className = 'chat-msg avatar-msg';
+      const escapedReply = reply.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      const escapedAudio = (audioUrl || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+      avatarDiv.innerHTML = `
+        <div class="msg-author">👑 Maharani Gayatri Devi</div>
+        <div>${reply}</div>
+        <div class="chat-msg-actions">
+          <button class="msg-action-btn" onclick="speakText('${escapedReply}', '${escapedAudio}')">🔊 Listen (Intro Voice)</button>
+          <button class="msg-action-btn" onclick="useInVideo('${escapedReply}')">🎬 Turn into D-ID Video</button>
+          <button class="msg-action-btn" onclick="copyReplyText(this, '${escapedReply}')">📋 Copy</button>
+        </div>
+      `;
+      chatMessages.appendChild(avatarDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      // 4. Animate Avatar and Speak in Intro Voice!
+      speakText(reply, audioUrl);
+    }
+
+    let currentAudioPlayer = null;
+
+    let pendingAudioToPlay = null;
+
+    function playAudioStream(audioSrc, fallbackText) {
+      if (currentAudioPlayer) {
+        try { currentAudioPlayer.pause(); currentAudioPlayer.currentTime = 0; } catch(e) {}
+        currentAudioPlayer = null;
+      }
+      pendingAudioToPlay = null;
+
+      const speakIndicator = document.getElementById('speakIndicator');
+      const liveBanner = document.getElementById('liveTalkingBanner');
+      const avatarBox = document.getElementById('avatarBox');
+      const vid = document.getElementById('videoPlayer');
+      const img = document.getElementById('avatarImage');
+
+      if (avatarBox) avatarBox.classList.add('is-speaking');
+      if (speakIndicator) speakIndicator.style.display = 'flex';
+      if (liveBanner) {
+        liveBanner.classList.add('active');
+        liveBanner.innerHTML = `
+          <div class="eq-bar-wrap">
+            <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+          </div>
+          <span>👑 Maharani Sa is speaking...</span>
+        `;
+      }
+
+      if (vid && img && img.style.display !== 'block') {
+        vid.style.display = 'block';
+        img.style.display = 'none';
+        vid.muted = true; // Mute video internal audio so the authentic Neerja voice plays!
+        vid.loop = true;
+        vid.play().catch(e => console.log('Video play caught:', e));
+      }
+
+      const audio = new Audio(audioSrc);
+      currentAudioPlayer = audio;
+
+      audio.onended = () => {
+        stopSpeaking();
+      };
+
+      audio.onerror = (e) => {
+        console.warn("Neural audio stream error:", e);
+        if (fallbackText) {
+          playSpeechSynthesisFallback(fallbackText);
+        } else {
+          stopSpeaking();
+        }
+      };
+
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(err => {
+          console.warn("Audio autoplay blocked by browser policy, awaiting user tap:", err);
+          pendingAudioToPlay = audio;
+          if (liveBanner) {
+            liveBanner.classList.add('active');
+            liveBanner.innerHTML = `
+              <button onclick="resumePendingAudio()" style="background: linear-gradient(135deg, #e67e22, #f39c12); border: none; color: #fff; font-weight: 700; font-size: 0.8rem; padding: 0.3rem 0.85rem; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; box-shadow: 0 0 14px rgba(243,156,18,0.7);">
+                🔊 Tap to Listen to Maharani Sa
+              </button>
+            `;
+          }
+        });
+      }
+    }
+
+    function resumePendingAudio() {
+      if (pendingAudioToPlay) {
+        const audio = pendingAudioToPlay;
+        pendingAudioToPlay = null;
+        audio.play().then(() => {
+          const liveBanner = document.getElementById('liveTalkingBanner');
+          if (liveBanner) {
+            liveBanner.innerHTML = `
+              <div class="eq-bar-wrap">
+                <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+              </div>
+              <span>👑 Maharani Sa is speaking...</span>
+            `;
+          }
+        }).catch(e => console.log("Resume audio failed:", e));
+      }
+    }
+
+    function playSpeechSynthesisFallback(text) {
+      if (!('speechSynthesis' in window)) {
+        stopSpeaking();
+        return;
+      }
+      const femaleVoice = getBestMaharaniVoice();
+      // Only use client speechSynthesis if an authentic Indian voice is available!
+      if (!femaleVoice) {
+        console.warn("No Indian voice found in browser speech engine; keeping pure neural voice.");
+        stopSpeaking();
+        return;
+      }
+      try {
+        window.speechSynthesis.resume();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.pitch = 1.0;
+        utterance.rate = 0.95;
+        utterance.voice = femaleVoice;
+
+        utterance.onend = () => stopSpeaking();
+        utterance.onerror = () => stopSpeaking();
+        window.speechSynthesis.speak(utterance);
+      } catch (err) {
+        stopSpeaking();
+      }
+    }
+
+    function speakText(text, audioUrl) {
+      stopSpeaking();
+
+      if (!isVoiceEnabled) {
+        const readingTime = Math.min(8000, Math.max(3500, text.split(' ').length * 280));
+        const avatarBox = document.getElementById('avatarBox');
+        const speakIndicator = document.getElementById('speakIndicator');
+        const liveBanner = document.getElementById('liveTalkingBanner');
+        const vid = document.getElementById('videoPlayer');
+        if (avatarBox) avatarBox.classList.add('is-speaking');
+        if (speakIndicator) speakIndicator.style.display = 'flex';
+        if (liveBanner) liveBanner.classList.add('active');
+        if (vid) { vid.muted = true; vid.loop = true; vid.play().catch(e=>{}); }
+        setTimeout(() => stopSpeaking(), readingTime);
+        return;
+      }
+
+      // 1. If we already have the neural Neerja audio URL (from /api/chat):
+      if (audioUrl) {
+        playAudioStream(audioUrl, text);
+        return;
+      }
+
+      // 2. Fetch the neural Neerja audio directly from /api/tts endpoint:
+      const ttsUrl = '/api/tts?text=' + encodeURIComponent(text);
+      playAudioStream(ttsUrl, text);
+    }
+
+    function stopSpeaking() {
+      if (currentAudioPlayer) {
+        try {
+          currentAudioPlayer.pause();
+          currentAudioPlayer.currentTime = 0;
+        } catch(e) {}
+        currentAudioPlayer = null;
+      }
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      const speakIndicator = document.getElementById('speakIndicator');
+      const liveBanner = document.getElementById('liveTalkingBanner');
+      const avatarBox = document.getElementById('avatarBox');
+      const vid = document.getElementById('videoPlayer');
+
+      if (speakIndicator) speakIndicator.style.display = 'none';
+      if (liveBanner) liveBanner.classList.remove('active');
+      if (avatarBox) avatarBox.classList.remove('is-speaking');
+      if (vid && vid.muted) {
+        vid.pause();
+      }
+    }
+
+    function playOriginalIntroVideo() {
+      stopSpeaking();
+      const vid = document.getElementById('videoPlayer');
+      const img = document.getElementById('avatarImage');
+      const avatarBox = document.getElementById('avatarBox');
+      const liveBanner = document.getElementById('liveTalkingBanner');
+
+      if (avatarBox) avatarBox.classList.add('is-speaking');
+      if (liveBanner) {
+        liveBanner.classList.add('active');
+        liveBanner.innerHTML = `
+          <div class="eq-bar-wrap">
+            <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+          </div>
+          <span>👑 Maharani Sa is speaking...</span>
+        `;
+      }
+
+      // Guarantee authentic Maharani Neerja neural voice stream with sub-millisecond response!
+      playAudioStream('/api/intro-audio');
+
+      if (vid) {
+        if (img) img.style.display = 'none';
+        vid.style.display = 'block';
+        if (!vid.src.includes('rajasthan_tourism_maharani.mp4')) {
+          vid.src = "rajasthan_tourism_maharani.mp4?v=20261010";
+        }
+        vid.currentTime = 0;
+        vid.muted = true; // Mute video internal audio so pure studio-quality Neerja voice plays smoothly
+        vid.loop = true;
+        vid.play().catch(e => console.log('Video play caught:', e));
+      }
+    }
+
+    function toggleVoiceAudio() {
+      isVoiceEnabled = !isVoiceEnabled;
+      const btn = document.getElementById('voiceToggleBtn');
+      if (btn) {
+        btn.textContent = isVoiceEnabled ? "🔊 Voice: ON" : "🔇 Voice: OFF";
+        btn.style.color = isVoiceEnabled ? "#2ecc71" : "#e74c3c";
+      }
+      if (!isVoiceEnabled) {
+        stopSpeaking();
+      }
+    }
+
+    function toggleMediaMode() {
+      const vid = document.getElementById('videoPlayer');
+      const img = document.getElementById('avatarImage');
+      const btn = document.getElementById('togglePhotoBtn');
+      if (!vid || !img) return;
+
+      if (vid.style.display !== 'none') {
+        vid.pause();
+        vid.style.display = 'none';
+        img.style.display = 'block';
+        btn.textContent = "🎬 Video Mode";
+      } else {
+        img.style.display = 'none';
+        vid.style.display = 'block';
+        btn.textContent = "🖼️ Photo Mode";
+      }
+    }
+
+    async function toggleSpeechRecognition() {
+      dismissMicError();
+
+      if (window.location.protocol === 'file:') {
+        showMicError("⚠️ Browser security blocks microphone access on file:/// URLs. Please open the website at http://localhost:5000 in your browser to speak with Maharani Sa!");
+        return;
+      }
+
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        showMicError("Speech recognition is not supported in this browser. Please use Google Chrome or Microsoft Edge to speak your question.");
+        return;
+      }
+
+      if (isRecognizing) {
+        stopSpeechRecognition();
+        return;
+      }
+
+      // Explicitly request microphone stream so browser shows the permission popup
+      try {
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          stream.getTracks().forEach(track => track.stop());
+        }
+      } catch (permErr) {
+        console.warn("Microphone permission error:", permErr);
+        if (permErr.name === 'NotAllowedError' || permErr.name === 'PermissionDeniedError') {
+          showMicError("⚠️ Microphone access was denied. Please click the 🔒 icon in your browser address bar and set Microphone to 'Allow'.");
+          return;
+        }
+      }
+
+      startSpeechRecognitionEngine();
+    }
+
+    function startSpeechRecognitionEngine() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const micBtn = document.getElementById('micBtn');
+      const banner = document.getElementById('micRecordingBanner');
+      const inputEl = document.getElementById('chatInput');
+
+      if (recognition) {
+        try { recognition.abort(); } catch(e){}
+        recognition = null;
+      }
+
+      try {
+        recognition = new SpeechRecognition();
+        recognition.lang = 'en-IN';
+        recognition.continuous = false;
+        recognition.interimResults = true;
+        recognition.maxAlternatives = 1;
+
+        let recognizedText = '';
+
+        recognition.onstart = () => {
+          isRecognizing = true;
+          if (micBtn) {
+            micBtn.classList.add('listening');
+            micBtn.textContent = '🔴';
+            micBtn.title = 'Listening to your voice... Click to stop';
+          }
+          if (banner) banner.style.display = 'flex';
+          const titleEl = document.getElementById('micStatusTitle');
+          const subEl = document.getElementById('micStatusSub');
+          if (titleEl) titleEl.textContent = '🔴 Listening to your voice...';
+          if (subEl) subEl.textContent = 'Speak your question clearly into your microphone...';
+        };
+
+        recognition.onresult = (event) => {
+          let interim = '';
+          let final = '';
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            const trans = event.results[i][0].transcript;
+            if (event.results[i].isFinal) {
+              final += trans;
+            } else {
+              interim += trans;
+            }
+          }
+
+          const currentText = final || interim;
+          if (inputEl && currentText) {
+            inputEl.value = currentText;
+            recognizedText = currentText;
+          }
+          if (final) {
+            const titleEl = document.getElementById('micStatusTitle');
+            const subEl = document.getElementById('micStatusSub');
+            if (titleEl) titleEl.textContent = '✅ Question captured:';
+            if (subEl) subEl.textContent = `"${final}" — Asking Maharani Sa...`;
+          }
+        };
+
+        recognition.onerror = (event) => {
+          console.warn("Speech recognition event error:", event.error);
+          isRecognizing = false;
+          cleanupMicUI();
+          if (event.error === 'not-allowed') {
+            showMicError("⚠️ Microphone permission denied. Click the 🔒 or 🎙️ icon in the browser address bar to Allow Microphone.");
+          } else if (event.error === 'no-speech') {
+            showMicError("Didn't catch any speech. Click 🎤 again and speak into your microphone.");
+          } else if (event.error === 'network') {
+            showMicError("Speech recognition network notice. Check your internet connection or type your question.");
+          } else if (event.error === 'audio-capture') {
+            showMicError("No microphone detected. Please plug in a microphone or headset.");
+          }
+        };
+
+        recognition.onend = () => {
+          isRecognizing = false;
+          cleanupMicUI();
+          if (recognizedText && recognizedText.trim()) {
+            setTimeout(() => {
+              sendChatMessage();
+            }, 350);
+          }
+        };
+
+        recognition.start();
+      } catch (err) {
+        console.error("Failed to start speech recognition:", err);
+        cleanupMicUI();
+        showMicError("Could not start microphone: " + err.message);
+      }
+    }
+
+    function stopSpeechRecognition() {
+      if (recognition) {
+        try { recognition.stop(); } catch(e){}
+      }
+      cleanupMicUI();
+    }
+
+    function cancelSpeechRecognition() {
+      if (recognition) {
+        try { recognition.abort(); } catch(e){}
+        recognition = null;
+      }
+      cleanupMicUI();
+      const inputEl = document.getElementById('chatInput');
+      if (inputEl) inputEl.value = '';
+    }
+
+    function cleanupMicUI() {
+      isRecognizing = false;
+      const micBtn = document.getElementById('micBtn');
+      const banner = document.getElementById('micRecordingBanner');
+      if (micBtn) {
+        micBtn.classList.remove('listening');
+        micBtn.textContent = '🎤';
+        micBtn.title = 'Speak to Maharani Sa with microphone';
+      }
+      if (banner) banner.style.display = 'none';
+    }
+
+    function showMicError(msg) {
+      const errBanner = document.getElementById('micErrorBanner');
+      const errText = document.getElementById('micErrorText');
+      if (errBanner && errText) {
+        errText.textContent = msg;
+        errBanner.style.display = 'flex';
+      } else {
+        alert(msg);
+      }
+    }
+
+    function dismissMicError() {
+      const errBanner = document.getElementById('micErrorBanner');
+      if (errBanner) errBanner.style.display = 'none';
+    }
+
+    function copyReplyText(btn, text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = "✓ Copied!";
+        setTimeout(() => { btn.textContent = orig; }, 2000);
+      });
+    }
+
+    function useInVideo(scriptContent) {
+      switchAppMode('studio');
+      document.getElementById('scriptInput').value = scriptContent;
+      updateWordCount();
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    }
+  </script>
+</body>
+</html>
